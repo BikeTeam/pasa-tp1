@@ -23,14 +23,14 @@ def periodogram_averaging(data, K, L):
     #Create periodograms
     D = int(round(N/K))
 
-    # Add zero padding due to overlap
-    zeros_to_add = D*(K-1)+L - N
+    # Add padding due to overlap
+    padding_to_add = D*(K-1)+L - N
 
-    if zeros_to_add<0:
+    if padding_to_add<0:
         raise ValueError("Invalid segment amount or size.")
 
-    zeros_beginning = int(zeros_to_add/2)
-    data_array = np.pad(data_array, (zeros_beginning, zeros_to_add - zeros_beginning), 'edge')
+    padding_beginning = int(padding_to_add/2)
+    data_array = np.pad(data_array, (padding_beginning, padding_to_add - padding_beginning), 'edge')
 
     periodograms = []
     for i in range(K):
