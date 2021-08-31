@@ -1,11 +1,25 @@
 import numpy as np
 from scipy import signal as sig
 
-def periodogram_averaging(data, K, L):
-    if data is None or data is np.empty:
-        raise ValueError("Data array doesn't exist.")
+def periodogram_averaging(signal, K, L):
+    """
+    The function estimates the power spectral density of the signal by using the Periodogram Averaging method.
+    
+    Parameters
+    ----------
+        'signal': The signal to work on. An array that contains the signal amplitude samples.
+        'K': Number of segments to divide the signal array into.
+        'L': Number of samples of each segment.
+
+    Returns
+    ----------
+        'freqs': An array that represents the frequencies of the resulting periodogram's samples.
+        'avg_periodogram': An array that represents the resulting periodogram. Each sample has units of V**2/Hz.
+    """
+    if signal is None or signal is np.empty:
+        raise ValueError("Signal array doesn't exist.")
     #Check parameters
-    data_array = np.array(data)
+    data_array = np.array(signal)
     N = len(data_array)
 
     if K<=0:
@@ -18,7 +32,7 @@ def periodogram_averaging(data, K, L):
         raise ValueError("Sample amount (N) must be greater or equal to segments amount (K)")
 
     if L>N:
-        raise ValueError("Invalid. Data array's size must be greater or equal to segment's size (L).")
+        raise ValueError("Invalid. Signal array's size must be greater or equal to segment's size (L).")
 
     #Create periodograms
     D = int(round(N/K))
@@ -38,8 +52,9 @@ def periodogram_averaging(data, K, L):
         f_i, p_i = sig.periodogram(data_i, window='hann')
         periodograms.append(np.array(p_i))
     
+    freqs = f_i
     #Average periodograms
     avg_periodogram = np.mean(np.array(periodograms), axis=0)
 
-    return f_i, avg_periodogram
+    return freqs, avg_periodogram
 
