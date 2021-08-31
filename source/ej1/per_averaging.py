@@ -8,19 +8,29 @@ def periodogram_averaging(data, K, L):
     data_array = np.array(data)
     N = len(data_array)
 
+    if K<=0:
+        raise ValueError("K must be positive.")
+
+    if L<=0:
+        raise ValueError("L must be positive.")
+
     if K>N:
-        raise ValueError("Invalid. Less array divisions (K) than samples.")
+        raise ValueError("Sample amount (N) must be greater or equal to segments amount (K)")
 
     if L>N:
-        raise ValueError("Invalid. Division size (L) is greater than data array size.")
+        raise ValueError("Invalid. Data array's size must be greater or equal to segment's size (L).")
 
     #Create periodograms
-    D = int(N/K)
+    D = int(round(N/K))
 
-    if D*(K-1)+L > N:
-        zeros_to_add = D*(K-1)+L - N
-        zeros = np.zeros(zeros_to_add)
-        data_array = np.append(data_array, zeros)
+    # Add zero padding due to overlap
+    zeros_to_add = D*(K-1)+L - N
+
+    if zeros_to_add<0:
+        raise ValueError("Invalid segment amount or size.")
+
+    zeros_beginning = int(zeros_to_add/2)
+    data_array = np.pad(data_array, (zeros_beginning, zeros_to_add - zeros_beginning), 'edge')
 
     periodograms = []
     for i in range(K):
