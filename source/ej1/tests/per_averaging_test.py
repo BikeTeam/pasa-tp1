@@ -13,7 +13,7 @@ N = len(data)
 K = 50
 D = int(round(N/K))
 
-manual_averaging = periodogram_averaging(data,K,L)
+f_manual, manual_averaging = periodogram_averaging(data,K,L)
 f, Pxx = welch(data, nperseg = L, noverlap=L-D,)
 
 plt.plot(f, manual_averaging, color = 'red', label = 'manual')
@@ -28,7 +28,7 @@ L2 = 70
 K2 = 200
 D2 = int(round(N/K2))
 
-manual_averaging2 = periodogram_averaging(data,K2,L2)
+f_manual, manual_averaging2 = periodogram_averaging(data,K2,L2)
 f2, Pxx2 = welch(data, nperseg = L2, noverlap=L2-D2)
 
 plt.plot(f2, manual_averaging2, color = 'red', label = 'manual')

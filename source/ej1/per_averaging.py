@@ -39,7 +39,7 @@ def periodogram_averaging(data, K, L):
         periodograms.append(np.array(p_i))
     
     #Average periodograms
-    averaged_periodogram = np.mean(np.array(periodograms), axis=0)
+    avg_periodogram = np.mean(np.array(periodograms), axis=0)
 
-    return averaged_periodogram
+    return f_i, avg_periodogram
 
