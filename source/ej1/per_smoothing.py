@@ -2,7 +2,7 @@ import numpy as np
 from scipy import signal as ss
 from scipy.fft import fft
 
-def periodogram_smothing(signal, L, window='bartlett', M=None):
+def periodogram_smoothing(signal, L, window='bartlett', M=None):
     """
     La funcion periodogram_smothing estima la densidad espectral de potencia de la señal signal
     utilizando el metodo de Periodogram Smopthing
