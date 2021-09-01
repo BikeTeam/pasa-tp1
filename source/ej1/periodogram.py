@@ -2,7 +2,7 @@ from scipy.fft import fft
 import scipy.signal as sps
 import numpy as np
 
-def periodogram(signal, window='boxcar', use_autocorrelation=False):
+def periodogram(signal_, window='boxcar', use_autocorrelation=False):
 
     """
     The function estimates the power spectral density of the signal by using the Periodogram method.
@@ -18,6 +18,8 @@ def periodogram(signal, window='boxcar', use_autocorrelation=False):
         'freqs': An array that represents the normalized frequencies of the resulting periodogram's samples.
         'avg_periodogram': An array that represents the resulting periodogram. Each sample has units of V**2/Hz.
     """
+    # Create signal copy
+    signal = signal_.copy()
     # Get number of samples
     N = signal.shape[0]
 
@@ -34,7 +36,7 @@ def periodogram(signal, window='boxcar', use_autocorrelation=False):
 
         # Apply window if required
         if window == 'bartlett':
-            signal *= sps.windows.bartlett(N) 
+            signal *= sps.windows.bartlett(N)
         elif window == 'parzen':
             signal *= sps.windows.parzen(N)
         elif window == 'hann':

@@ -1,5 +1,6 @@
 import numpy as np
 from scipy import signal as sig
+from .periodogram import periodogram
 
 def periodogram_averaging(signal, K, L):
     """
@@ -49,7 +50,7 @@ def periodogram_averaging(signal, K, L):
     periodograms = []
     for i in range(K):
         data_i = data_array[D*i:D*i+L]
-        f_i, p_i = sig.periodogram(data_i, window='hann')
+        f_i, p_i = periodogram(data_i, window='hann')
         periodograms.append(np.array(p_i))
     
     freqs = f_i
