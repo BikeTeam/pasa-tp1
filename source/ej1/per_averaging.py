@@ -1,5 +1,5 @@
 import numpy as np
-from scipy import signal as sig
+#from scipy import signal as sig
 from periodogram import periodogram
 
 def periodogram_averaging(signal, K, L, window='bartlett',):
