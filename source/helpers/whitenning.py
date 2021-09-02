@@ -20,4 +20,4 @@ def band_pass_filter(whitened_signal, fs, fband):
     # We need to suppress the high frequency noise (no signal!) with some bandpassing:
     bb, ab = butter(4, [fband[0]*2./fs, fband[1]*2./fs], btype='band')
     normalization = np.sqrt((fband[1]-fband[0])/(fs/2))
-    return filtfilt(bb, ab, whitened_signal) / normalization
+    return filtfilt(bb, ab, whitened_signal)
