@@ -22,23 +22,35 @@ def periodogram_smoothing(signal, L, window='bartlett', M=None):
     # Calculo la autocorrelación de la señal
     lags = np.arange(-(N-1), N)
     rxx = ss.correlate(signal, signal, method='direct') / N
-    rxx = rxx[np.logical_and(lags > -L, lags < L)]
-    lags = lags[np.logical_and(lags > -L, lags < L)]
+    
 
     win = None
+    lag_min = 0
     
     # Armo la ventana seleccionada
     if window == 'bartlett':
-        win = ss.windows.bartlett(2 * L - 1) 
+        #win = ss.windows.bartlett(2 * L - 1)
+        win = ss.windows.bartlett(L) 
+        
     elif window == 'parzen':
-        win = ss.windows.parzen(2 * L - 1)
+        #win = ss.windows.parzen(2 * L - 1)
+        win = ss.windows.parzen(L)
+        
     elif window == 'bm_tukey':
+        lag_min = -L + 1
         dw, t = (2 * np.pi / N) * (2 * M + 1), np.arange(-L + 1, L)
         w = np.sinc(t * dw / (2 * np.pi)) * (dw / (2*np.pi))
         win = w / max(w) # Normalizo la ventana w(0) = 1
     
     if win is None:
         raise ValueError("Unknown window.")
+        
+    #rxx = rxx[np.logical_and(lags > -L, lags < L)]
+    rxx = rxx[np.logical_and(lags >= lag_min, lags < L)]
+    
+    #lags = lags[np.logical_and(lags > -L, lags < L)]
+    lags = lags[np.logical_and(lags >= lag_min, lags < L)]
+    
     
     # Multiplico la
     windowed_rxx = rxx * win

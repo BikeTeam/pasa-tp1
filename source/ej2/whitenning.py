@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 def whiten(strain, interp_psd, dt):
     Nt = len(strain)
     freqs = np.fft.rfftfreq(Nt, dt)
-    freqs1 = np.linspace(0,2048.,int(Nt/2+1))
 
     # whitening: transform to freq domain, divide by asd, then transform back, 
     # taking care to get normalization right.

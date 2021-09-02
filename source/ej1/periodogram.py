@@ -2,7 +2,7 @@ from scipy.fft import fft
 import scipy.signal as sps
 import numpy as np
 
-def periodogram(signal_, window='boxcar', use_autocorrelation=False):
+def periodogram(signal_, window='boxcar', padding=False, use_autocorrelation=False):
 
     """
     The function estimates the power spectral density of the signal by using the Periodogram method.
@@ -12,6 +12,7 @@ def periodogram(signal_, window='boxcar', use_autocorrelation=False):
         'signal': The signal to work on. An array that contains the signal amplitude samples.
         'use_autocorrelation': Boolean indicating which method is going to be used to estimate psd.
         'window': String that indicates window form.
+        'padding': Indicates whether to perform zero padding to have double precision on spectrum. Only works in 'periodogram by definition' mode.
 
     Returns
     ----------
@@ -28,7 +29,7 @@ def periodogram(signal_, window='boxcar', use_autocorrelation=False):
     if use_autocorrelation == True:
         # Autocorrelation method
         ac = np.correlate(signal, signal, mode='full') / N
-        per = np.absolute(fft(ac))
+        per = np.absolute(fft(ac, norm='ortho'))
         # Now we have 2N-1 points instead of N. Then there is an improvement in frequency resolution.
         xf = np.arange(len(per)) / len(per)
     
@@ -47,11 +48,14 @@ def periodogram(signal_, window='boxcar', use_autocorrelation=False):
         # By definition
         # First, compute the signal FFT
         # Adding zero-padding to enhance frequency resolution
-        yf = fft(np.pad(signal, (N//2,N//2)))
+        if padding==True:
+            signal = np.pad(signal, (N//2,N//2))
+            
+        yf = fft(signal, norm='ortho')
         xf = np.arange(len(yf)) / len(yf)
         
         # Calculate periodogram by powering amplitude spectrum modulus by 2 and dividing by N
         per = (np.abs(yf)**2) / N
         
     # Returning positive freq spectrum only
-    return xf[xf < 0.5], per[xf < 0.5]   
+    return xf[xf <= 0.5], per[xf <= 0.5]   
