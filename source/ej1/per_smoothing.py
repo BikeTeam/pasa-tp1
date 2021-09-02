@@ -58,6 +58,6 @@ def periodogram_smoothing(signal, L, window='bartlett', M=None):
     spectre = np.abs(fft(windowed_rxx, norm='forward')) 
     freq = np.arange(len(spectre)) / len(spectre)
 
-    freq, spectre = freq[freq < 0.5], spectre[freq < 0.5]
+    freq, spectre = freq[freq <= 0.5], spectre[freq <= 0.5]
     
     return freq, spectre
