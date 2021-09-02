@@ -7,14 +7,12 @@ import matplotlib.pyplot as plt
 def whiten(strain, interp_psd, dt):
     Nt = len(strain)
     freqs = np.fft.rfftfreq(Nt, dt)
-    print(f'max: {max(freqs)}')
-    print(f'min: {min(freqs)}')
 
     # whitening: transform to freq domain, divide by asd, then transform back, 
     # taking care to get normalization right.
     hf = np.fft.rfft(strain)
-    norm = 1./np.sqrt(1./(dt*2))
-    white_hf = hf / np.sqrt(interp_psd(freqs)) * norm
+    #norm = 1./np.sqrt(1./(dt*2))
+    white_hf = hf / np.sqrt(interp_psd(freqs) / 2.0 / dt)
     white_ht = np.fft.irfft(white_hf, n=Nt)
     return  white_ht
  
