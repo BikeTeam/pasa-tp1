@@ -11,8 +11,7 @@ def periodogram_averaging(signal, K, L, window='bartlett',):
         'signal':   array_like - The signal to work on. An array that contains the signal amplitude samples.
         'K':        int - Number of segments to divide the signal array into.
         'L':        int - Number of samples of each segment.
-        'window':   str or tuple or array_like, optional -  Type of window to apply to each segment when calculating its periodogram. 
-                                                            See "https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.get_window.html#scipy.signal.get_window" for a list of windows and required parameters.
+        'window':   str or tuple or array_like, optional -  Type of window to apply to each segment when calculating its periodogram. The scipy get_window function accepts the same list of windows and required parameters.
 
     Returns
     ----------
